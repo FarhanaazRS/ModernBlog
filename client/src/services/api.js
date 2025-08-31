@@ -117,7 +117,7 @@ export const postsAPI = {
     },
   }),
   
-  // Updated createPost to handle both URL and file uploads
+  // FIXED: createPost to handle both URL and file uploads properly
   createPost: async (postData, token, imageFile = null) => {
     if (imageFile) {
       // Create FormData for file upload
@@ -128,13 +128,11 @@ export const postsAPI = {
       
       return api.uploadRequest('/posts', formData, token);
     } else {
-      // Regular JSON request for URL-based images
-      return api.request('/posts', {
-        method: 'POST',
+      // Use the api.post method which properly handles JSON
+      return api.post('/posts', postData, {
         headers: {
           'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify(postData),
+        }
       });
     }
   },
@@ -161,13 +159,11 @@ export const postsAPI = {
       
       return api.uploadRequest(`/posts/${id}`, formData, token, 'PUT');
     } else {
-      // Regular JSON request for URL-based images
-      return api.request(`/posts/${id}`, {
-        method: 'PUT',
+      // Use the api.put method which properly handles JSON
+      return api.put(`/posts/${id}`, postData, {
         headers: {
           'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify(postData),
+        }
       });
     }
   },
