@@ -15,8 +15,8 @@ app.use(express.json({ limit: '10mb' })); // Increase JSON limit
 app.use(express.urlencoded({ limit: '10mb', extended: true })); // Add this for form data
 
 // Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/posts', postRoutes);
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/posts', require('./routes/posts'));
 
 // MongoDB connection
 mongoose.connect(process.env.MONGODB_URI)
