@@ -4,23 +4,22 @@ A full-stack modern blog application built with React, Node.js, Express, and Mon
 
 ## 🚀 Live Demo
 
-**[View Live Application](https://modernblog-95gz.onrender.com)**
+**[View Live Application (Click Here)](https://modernblog-95gz.onrender.com)**
 
 ## 📸 Screenshots
 
 ### Homepage & Post List
 <img width="960" height="441" alt="image" src="https://github.com/user-attachments/assets/4e49e361-3198-48f3-be33-5e3bead6796a" />
+
 <img width="960" height="443" alt="image" src="https://github.com/user-attachments/assets/0093a5c3-ae20-4845-b71c-8ba22de4ad5a" />
 
 
-*Clean and responsive homepage displaying all blog posts with search functionality*
-
 ### Post Detail & Comments
 <img width="960" height="442" alt="image" src="https://github.com/user-attachments/assets/9c26773c-5a69-4371-9437-db5f96d034bd" />
-*Individual post view with full content, author information, and interactive features*
 
 ### Dashboard & Post Creation
 <img width="960" height="438" alt="image" src="https://github.com/user-attachments/assets/c2292b02-c9f2-4250-a907-35ac682ed4d7" />
+
 <img width="960" height="443" alt="image" src="https://github.com/user-attachments/assets/2555dfd1-d5d3-4954-8a6b-664cb5279cee" />
 
 
