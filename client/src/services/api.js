@@ -128,12 +128,24 @@ export const postsAPI = {
       
       return api.uploadRequest('/posts', formData, token);
     } else {
-      // Use the api.post method which properly handles JSON
-      return api.post('/posts', postData, {
+      // Direct fetch call to bypass any api method issues
+      const url = `${API_BASE_URL}/posts`;
+      const response = await fetch(url, {
+        method: 'POST',
         headers: {
+          'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
-        }
+        },
+        body: JSON.stringify(postData),
       });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.message || 'Something went wrong');
+      }
+      
+      return { data, status: response.status };
     }
   },
   
