@@ -14,25 +14,40 @@ router.post('/register', [
   body('password').isLength({ min: 6 })
 ], async (req, res) => {
   try {
+    console.log('=== REGISTER DEBUG ===');
+    console.log('Request body:', req.body);
+    
     const errors = validationResult(req);
+    console.log('Validation errors:', errors.array());
+    
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      console.log('Validation failed:', errors.array());
+      return res.status(400).json({ 
+        message: 'Validation failed',
+        errors: errors.array() 
+      });
     }
 
     const { username, email, password } = req.body;
+    console.log('Extracted data:', { username, email, password: '***' });
 
     // Check if user exists
     const existingUser = await User.findOne({ 
       $or: [{ email }, { username }] 
     });
     
+    console.log('Existing user check:', !!existingUser);
+    
     if (existingUser) {
+      console.log('User already exists');
       return res.status(400).json({ message: 'User already exists' });
     }
 
     // Create user
+    console.log('Creating new user...');
     const user = new User({ username, email, password });
     await user.save();
+    console.log('User created successfully');
 
     // Generate token
     const token = jwt.sign(
@@ -41,6 +56,7 @@ router.post('/register', [
       { expiresIn: '7d' }
     );
 
+    console.log('Registration successful');
     res.status(201).json({
       token,
       user: {
@@ -50,6 +66,7 @@ router.post('/register', [
       }
     });
   } catch (error) {
+    console.log('Registration error:', error.message);
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
@@ -60,22 +77,38 @@ router.post('/login', [
   body('password').exists()
 ], async (req, res) => {
   try {
+    console.log('=== LOGIN DEBUG ===');
+    console.log('Request body:', req.body);
+    
     const errors = validationResult(req);
+    console.log('Validation errors:', errors.array());
+    
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      console.log('Login validation failed:', errors.array());
+      return res.status(400).json({ 
+        message: 'Validation failed',
+        errors: errors.array() 
+      });
     }
 
     const { email, password } = req.body;
+    console.log('Login attempt for email:', email);
 
     // Find user
     const user = await User.findOne({ email });
+    console.log('User found:', !!user);
+    
     if (!user) {
+      console.log('User not found');
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
     // Check password
     const isMatch = await user.comparePassword(password);
+    console.log('Password match:', isMatch);
+    
     if (!isMatch) {
+      console.log('Password mismatch');
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
@@ -86,6 +119,7 @@ router.post('/login', [
       { expiresIn: '7d' }
     );
 
+    console.log('Login successful');
     res.json({
       token,
       user: {
@@ -95,6 +129,7 @@ router.post('/login', [
       }
     });
   } catch (error) {
+    console.log('Login error:', error.message);
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
