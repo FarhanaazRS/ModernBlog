@@ -79,23 +79,63 @@ const api = {
   }
 };
 
-// Auth API
+// Auth API - Fixed with direct fetch calls
 export const authAPI = {
-  login: (credentials) => api.request('/auth/login', {
-    method: 'POST',
-    body: JSON.stringify(credentials),
-  }),
+  login: async (credentials) => {
+    const url = `${API_BASE_URL}/auth/login`;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(credentials),
+    });
+    
+    const data = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(data.message || 'Login failed');
+    }
+    
+    return { data, status: response.status };
+  },
   
-  register: (userData) => api.request('/auth/register', {
-    method: 'POST',
-    body: JSON.stringify(userData),
-  }),
+  register: async (userData) => {
+    const url = `${API_BASE_URL}/auth/register`;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData),
+    });
+    
+    const data = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(data.message || 'Registration failed');
+    }
+    
+    return { data, status: response.status };
+  },
   
-  getProfile: (token) => api.request('/auth/profile', {
-    headers: {
-      'Authorization': `Bearer ${token}`,
-    },
-  }),
+  getProfile: async (token) => {
+    const url = `${API_BASE_URL}/auth/me`;
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    
+    const data = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(data.message || 'Failed to get profile');
+    }
+    
+    return { data, status: response.status };
+  },
 };
 
 // Posts API
